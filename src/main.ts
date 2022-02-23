@@ -5,28 +5,26 @@ import './assets/css/index.less'
 
 import rootApp from './App.vue'
 
-import myRequest from '@/service'
-
-
 import router from './router'
 import store from './store'
+import { setupStore } from './store'
 
 const app = createApp(rootApp)
 
 app.use(globalRegister)
 app.use(router)
 app.use(store)
+setupStore()
 
 app.mount('#app')
 
-// console.log(process.env.VUE_APP_BASE_URL);
-
+// import myRequest from '@/service'
 // interface DataType {
 //     data: any
 //     returnCode: string
 //     success:boolean
 // }
-
+//
 // myRequest.get<DataType>({
 //     url:'/home/multidata',
 //     interceptors:{
@@ -35,7 +33,5 @@ app.mount('#app')
 //         }
 //     }
 // }).then(res=>{
-//     console.log(res.data)
-//     console.log(res.returnCode)
-//     console.log(res.success)
+//
 // })

@@ -2,7 +2,7 @@ import axios from "axios";
 import type {AxiosInstance} from "axios";
 
 import {ElLoading} from 'element-plus'
-import {LoadingInstance} from 'element-plus/lib/components/loading/src/loading'
+import {ILoadingInstance} from "element-plus/es/el-loading/src/loading.type";
 
 const DEFAULT_LOADING: boolean = true
 
@@ -16,7 +16,7 @@ class MyRequest {
     instance: AxiosInstance;
     interceptors?: MyRequestInterceptors;
     showLoading: boolean
-    loading?: LoadingInstance
+    loading?: ILoadingInstance
 
     constructor(config: MyRequestConfig) {
         this.instance = axios.create(config);
@@ -36,7 +36,7 @@ class MyRequest {
         // 添加所有的实例都有的拦截器
         this.instance.interceptors.request.use(
             (config) => {
-                console.log('所有实例都有的拦截器，请求拦截成功1');
+                // console.log('所有实例都有的拦截器，请求拦截成功1');
 
                 if (this.showLoading) {
                     this.loading = ElLoading.service({
@@ -53,7 +53,7 @@ class MyRequest {
         );
         this.instance.interceptors.response.use(
             (res) => {
-                console.log('所有实例都有的拦截器，响应拦截成功1');
+                // console.log('所有实例都有的拦截器，响应拦截成功1');
 
                 // 将loading移除
                 this.loading?.close()
@@ -66,7 +66,7 @@ class MyRequest {
                 }
             },
             (err) => {
-                console.log('所有的实例都有的拦截器：响应失败拦截')
+                // console.log('所有的实例都有的拦截器：响应失败拦截')
                 if (err.response.status === 404) {
                     console.log('404的错误')
                 }
