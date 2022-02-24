@@ -79,18 +79,14 @@ export default defineComponent({
   }
 
   .account-control {
-    margin-top: 10px;
+    //margin-top: 10px;
     display: flex;
     justify-content: space-between;
   }
 
   .login-btn {
     width: 100%;
-    margin-top: 10px;
-  }
-
-  .el-link {
-    color: #409eff;
+    //margin-top: 10px;
   }
 }
 </style>

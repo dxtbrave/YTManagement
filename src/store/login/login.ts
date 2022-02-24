@@ -8,6 +8,7 @@ import router from "@/router";
 import {IAccount} from "@/service/login/types";
 import {ILoginState} from "@/store/login/types";
 import {IRootState} from "@/store/types";
+import store from "@/store";
 
 const loginModule: Module<ILoginState, IRootState> = {
     namespaced: true,
@@ -28,16 +29,6 @@ const loginModule: Module<ILoginState, IRootState> = {
         },
         changeUserMenus(state,userMenus:any){
             state.userMenus = userMenus
-
-            // 1.userMenus -> routes
-            const routes = mapMenusToRoutes(userMenus)
-            // console.log(routes)
-
-            // 2.将routes -> router.main.children
-            routes.forEach(route => {
-                router.addRoute('main',route)
-            })
-
         }
     },
     actions: {
@@ -78,6 +69,14 @@ const loginModule: Module<ILoginState, IRootState> = {
             if (userMenus){
                 commit('changeUserMenus',userMenus)
             }
+            // 1.userMenus -> routes
+            const routes = mapMenusToRoutes(userMenus)
+            // console.log(routes)
+
+            // 2.将routes -> router.main.children
+            routes.forEach(route => {
+                router.addRoute('main',route)
+            })
         }
         // phoneLoginAction({commit}, payload: any) {
         //     console.log('执行phoneLoginAction')

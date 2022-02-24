@@ -2,7 +2,8 @@ import axios from "axios";
 import type {AxiosInstance} from "axios";
 
 import {ElLoading} from 'element-plus'
-import {ILoadingInstance} from "element-plus/es/el-loading/src/loading.type";
+// import {ILoadingInstance} from "element-plus/es/el-loading/src/loading.type";
+import {ILoadingInstance} from "element-plus/lib/components/loading/src/loading.type";
 
 const DEFAULT_LOADING: boolean = true
 

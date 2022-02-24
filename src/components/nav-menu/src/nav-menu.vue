@@ -1,10 +1,11 @@
 <template>
   <div class="nav-menu">
     <div class="logo">
-      <img class="img" src="~@/assets/img/logo.svg" alt="logo">
-      <span class="title" v-if="!collapse">云天商城</span>
+<!--      <img class="img" src="~@/assets/img/logo.svg" alt="logo">-->
+      <img class="img" src="~@/assets/img/vuelogo.png" alt="logo">
+      <span class="title" v-if="!collapse">云天后台</span>
     </div>
-    <el-menu default-active="2"
+    <el-menu :default-active="defaultValue"
              class="el-menu-vertical"
              :collapse="collapse"
              background-color="#0c2135"
@@ -15,7 +16,7 @@
         <!--    二级菜单    -->
         <template v-if="item.type === 1">
           <!--    二级菜单可以展开的标题      -->
-          <el-submenu :index="item.id + ''">
+          <el-sub-menu :index="item.id + ''">
             <template #title>
               <i v-if="item.icon" :class="item.icon"></i>
               <span>{{ item.name }}</span>
@@ -27,7 +28,7 @@
                 <span>{{ subitem.name }}</span>
               </el-menu-item>
             </template>
-          </el-submenu>
+          </el-sub-menu>
 
         </template>
         <!--   一级菜单     -->
@@ -44,9 +45,11 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, computed} from "vue";
+import {defineComponent, computed, ref} from "vue";
 import {useStore} from "@/store";
-import {useRouter} from "vue-router";
+import {useRouter,useRoute} from "vue-router";
+
+import { pathMapToMenu } from '@/utils/map-menus'
 
 export default defineComponent({
   props:{
@@ -58,11 +61,21 @@ export default defineComponent({
     }
   },
   setup() {
+    // store
     const store = useStore()
-    const router = useRouter()
     const userMenus = computed(() => store.state.login.userMenus)
 
 
+    // router
+    const router = useRouter()
+    const route = useRoute()
+    const currentPath = route.path
+
+    // data
+    const menu = pathMapToMenu(userMenus.value,currentPath)
+    const defaultValue = ref(menu.id + '')
+
+    // event handle
     const handleMenuItemClick = (item:any) => {
       router.push({
         path:item.url ?? '/not-found'
@@ -70,9 +83,12 @@ export default defineComponent({
     }
 
 
+
+
     return {
       userMenus,
-      handleMenuItemClick
+      handleMenuItemClick,
+      defaultValue
     };
   },
 });

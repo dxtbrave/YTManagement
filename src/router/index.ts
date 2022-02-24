@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 
 import LocalCache from '@/utils/catch'
+import { firstMenu } from '@/utils/map-menus'
 
 const login = () => import('@/views/login/login.vue')
 const main = () => import('@/views/main/main.vue')
@@ -42,6 +43,10 @@ router.beforeEach((to)=>{
         if (!token){
             return '/login'
         }
+
+    }
+    if (to.path === '/main'){
+        return firstMenu.url
     }
 })
 

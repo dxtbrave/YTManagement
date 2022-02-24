@@ -1,4 +1,5 @@
 import {App} from 'vue'
+import 'element-plus/dist/index.css'
 // import 'element-plus/lib/theme-chalk/index.css'
 // import 'element-plus/lib/theme-chalk/base.css'
 
@@ -17,14 +18,19 @@ import {
     ElAside,
     ElMain,
     ElFooter,
-    ElSubmenu,
+    ElSubMenu,
     ElMenu,
     ElMenuItem,
     ElMenuItemGroup,
     ElDropdown,
     ElDropdownItem,
     ElDropdownMenu,
-    ElAvatar
+    ElAvatar,
+    ElRow,
+    ElCol,
+    ElSelect,
+    ElOption,
+    ElDatePicker
 
 
   } from 'element-plus'
@@ -44,14 +50,19 @@ import {
     ElAside,
     ElMain,
     ElFooter,
-    ElSubmenu,
+    ElSubMenu,
     ElMenu,
     ElMenuItem,
     ElMenuItemGroup,
     ElDropdown,
     ElDropdownItem,
     ElDropdownMenu,
-    ElAvatar
+    ElAvatar,
+    ElRow,
+    ElCol,
+    ElSelect,
+    ElOption,
+    ElDatePicker
   ]
   
   export default function (app: App): void {

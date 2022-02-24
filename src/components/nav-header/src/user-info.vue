@@ -1,11 +1,11 @@
 <template>
     <div class="user-info">
+      <el-avatar>
+        <img src="~@/assets/img/lixiaoyao.jpg" alt="">
+      </el-avatar>
       <el-dropdown>
           <span class="el-dropdown-link">
-            <el-avatar>
-              <img src="~@/assets/img/lixiaoyao.jpg" alt="">
-            </el-avatar>
-            <span>{{}}</span>
+            <span class="user-name">{{userName}}</span>
           </span>
         <template #dropdown>
           <el-dropdown-menu>
@@ -15,6 +15,8 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown>
+
+
     </div>
 </template>
 
@@ -25,9 +27,25 @@ import {useStore} from "vuex";
 export default defineComponent({
   setup() {
     const store = useStore()
-    return {};
+    const userName = store.state.login.userInfo.name
+    return {
+      userName
+    };
   },
 });
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.user-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .user-name{
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+}
+</style>
