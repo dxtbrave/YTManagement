@@ -30,12 +30,14 @@ import {
     ElCol,
     ElSelect,
     ElOption,
-    ElDatePicker
+    ElDatePicker,
+    ElBreadcrumb,
+    ElBreadcrumbItem
 
 
-  } from 'element-plus'
-  
-  const components = [
+} from 'element-plus'
+
+const components = [
     ElButton,
     ElForm,
     ElFormItem,
@@ -62,11 +64,13 @@ import {
     ElCol,
     ElSelect,
     ElOption,
-    ElDatePicker
-  ]
-  
-  export default function (app: App): void {
+    ElDatePicker,
+    ElBreadcrumb,
+    ElBreadcrumbItem
+]
+
+export default function (app: App): void {
     for (const component of components) {
-      app.component(component.name, component)
+        app.component(component.name, component)
     }
-  }
+}
