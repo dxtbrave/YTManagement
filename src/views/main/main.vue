@@ -2,7 +2,7 @@
   <div class="main">
     <el-container class="main-content">
       <!--  侧边栏  -->
-      <el-aside :width="isCollapse ? '70px' : '210px'">
+      <el-aside :width="isCollapse ? '65px' : '210px'">
         <nav-menu :collapse="isCollapse" />
       </el-aside>
       <el-container class="page">

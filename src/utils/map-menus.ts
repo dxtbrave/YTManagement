@@ -42,7 +42,6 @@ export function mapMenusToRoutes(userMenus:any[]):RouteRecordRaw[]{
 export function pathMapBreadcrumbs(usersMenus:any[],currentPath:string) {
     const breadcrumbs:IBreadcrumb[] = []
     pathMapToMenu(usersMenus,currentPath,breadcrumbs)
-
     return breadcrumbs
 }
 
