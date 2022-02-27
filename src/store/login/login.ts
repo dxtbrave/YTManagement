@@ -2,7 +2,7 @@ import {Module} from "vuex";
 
 import {accountLoginRequest, requestUserInfoById ,requestUserMenusByRoleId} from "@/service/login/login";
 import LocalCache from '@/utils/catch'
-import {mapMenusToRoutes} from '@/utils/map-menus'
+import {mapMenusToRoutes,mapMenusToPermissions} from '@/utils/map-menus'
 import router from "@/router";
 
 import {IAccount} from "@/service/login/types";
@@ -16,7 +16,8 @@ const loginModule: Module<ILoginState, IRootState> = {
         return {
             token: '',
             userInfo: {},
-            userMenus:[]
+            userMenus:[],
+            permissions:[]
         }
     },
     getters: {},
@@ -29,6 +30,10 @@ const loginModule: Module<ILoginState, IRootState> = {
         },
         changeUserMenus(state,userMenus:any){
             state.userMenus = userMenus
+
+            // 获取用户按钮的权限
+            const permissions = mapMenusToPermissions(userMenus)
+            state.permissions = permissions
         }
     },
     actions: {
@@ -51,7 +56,7 @@ const loginModule: Module<ILoginState, IRootState> = {
             commit('changeUserMenus',userMenus)
             LocalCache.setCache('userMenus',userMenus)
 
-            // 跳转到首页
+            // 4.跳转到首页
             router.push('/main')
 
 

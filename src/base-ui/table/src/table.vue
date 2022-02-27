@@ -8,7 +8,12 @@
         </div>
       </slot>
     </div>
-    <el-table :data="listData" border style="width: 100%" @selection-change="handleSelectionChange">
+    <el-table :data="listData"
+              border
+              style="width: 100%"
+              @selection-change="handleSelectionChange"
+              v-bind="childrenProps"
+    >
       <el-table-column v-if="showSelectColumn"
                        type="selection"
                        align="center"
@@ -22,7 +27,7 @@
                        width="80"></el-table-column>
 
       <template v-for="propItem in propList" :key="propItem.prop">
-        <el-table-column v-bind="propItem" align="center">
+        <el-table-column v-bind="propItem" align="center" show-overflow-tooltip>
           <template #default="scope">
             <slot :name="propItem.slotName" :row="scope.row">
               {{ scope.row[propItem.prop] }}
@@ -31,16 +36,16 @@
         </el-table-column>
       </template>
     </el-table>
-    <div class="footer">
+    <div class="footer" v-if="showFooter">
       <slot name="footer">
         <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :current-page="currentPage4"
-            :page-sizes="[100, 200, 300, 400]"
-            :page-size="100"
+            :current-page="page.currentPage"
+            :page-sizes="[10, 20, 30]"
+            :page-size="page.pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="400"
+            :total="listCount"
         >
         </el-pagination>
       </slot>
@@ -61,6 +66,10 @@ export default defineComponent({
       type: Array,
       required: true
     },
+    listCount:{
+      type:Number,
+      default:0
+    },
     propList: {
       type: Array,
       required: true
@@ -72,15 +81,41 @@ export default defineComponent({
     showSelectColumn: {
       type: Boolean,
       default: false
+    },
+    page:{
+      type:Object,
+      default:()=>{
+        return {
+          currentPage:0,
+          pageSize:10
+        }
+      }
+    },
+    childrenProps:{
+      type:Object,
+      default:()=>{}
+    },
+    showFooter:{
+      type:Boolean,
+      default:true
     }
   },
-  emits:['selectionChange'],
+  emits:['selectionChange','update:page'],
   setup(props,{emit}) {
     const handleSelectionChange = (value:any) =>{
       emit('selectionChange',value)
     }
+    const handleCurrentChange = (currentPage:number) => {
+      emit('update:page',{...props.page,currentPage})
+    }
+    const handleSizeChange = (pageSize:number) => {
+      emit('update:page',{...props.page,pageSize})
+    }
     return {
-      handleSelectionChange
+      handleSelectionChange,
+      handleSizeChange,
+      handleCurrentChange
+
     };
   },
 });
