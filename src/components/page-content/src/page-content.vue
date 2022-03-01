@@ -7,25 +7,19 @@
     >
       <!-- 1.header中的插槽 -->
       <template #header-handler>
-        <el-button v-if="isCreate" type="primary" size="medium">新建用户</el-button>
+        <el-button v-if="isCreate" type="primary" size="small" plain @click="handleNewClick">新建数据</el-button>
       </template>
       <!--    2.列中的插槽    -->
-      <template #status="scope">
-        <el-button size="mini"
-                   plain
-                   :type="scope.row.enable ? 'success' : 'danger'">{{ scope.row.enable ? '启用' : '禁用' }}
-        </el-button>
-      </template>
       <template #createAt="scope">
         <span>{{ $filters.formatTime(scope.row.createAt) }}</span>
       </template>
       <template #updateAt="scope">
         <span>{{ $filters.formatTime(scope.row.updateAt) }}</span>
       </template>
-      <template #handler>
+      <template #handler="scope">
         <div class="handle-btns">
-          <el-button v-if="isUpdate" class="el-icon-edit" size="mini" type="text">编辑</el-button>
-          <el-button v-if="isDelete" class="el-icon-delete" size="mini" type="text">删除</el-button>
+          <el-button v-if="isUpdate" class="el-icon-edit" size="mini" type="text" @click="handleEditClick(scope.row)">编辑</el-button>
+          <el-button v-if="isDelete" class="el-icon-delete" size="mini" type="text" @click="handleDeleteClick(scope.row)">删除</el-button>
         </div>
       </template>
 
@@ -61,6 +55,7 @@ export default defineComponent({
       required: true
     }
   },
+  emits:['newBtnClick','editBtnClick'],
   setup(props, {emit}) {
     const store = useStore()
 
@@ -96,23 +91,29 @@ export default defineComponent({
     // 4.获取其他的动态插槽名称
     const otherPropSlots = props.contentTableConfig?.propList.filter(
         (item: any) => {
-          if (item.slotName === 'status' ||
-              item.slotName === 'createAt' ||
+          if (item.slotName === 'createAt' ||
               item.slotName === 'updateAt' ||
               item.slotName === 'handler') {
             return false
           }
           return true
-          // if (item.slotName === 'createAt'){
-          //   return false
-          // }
-          // if (item.slotName === 'updateAt'){
-          //   return false
-          // }
-          // if (item.slotName === 'handler'){
-          //   return false
-          // }
         })
+
+    // 5.删除/编辑/新建操作
+    const handleDeleteClick = (item:any) => {
+      store.dispatch('system/deletePageDataAction',{
+        pageName:props.pageName,
+        id:item.id
+      })
+    }
+    const handleNewClick = () => {
+      emit('newBtnClick')
+    }
+
+    const handleEditClick = (item:any) => {
+      emit('editBtnClick',item)
+    }
+
     return {
       dataList,
       dataCount,
@@ -121,7 +122,10 @@ export default defineComponent({
       otherPropSlots,
       isCreate,
       isUpdate,
-      isDelete
+      isDelete,
+      handleDeleteClick,
+      handleNewClick,
+      handleEditClick
     };
   },
 });

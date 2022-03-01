@@ -125,7 +125,7 @@ export default defineComponent({
 .header{
   display: flex;
   height: 45px;
-  padding: 0 5px;
+  padding: 0px 5px 5px 0px;
   justify-content: space-between;
   align-items: center;
 

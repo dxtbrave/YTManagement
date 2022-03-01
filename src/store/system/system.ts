@@ -2,7 +2,7 @@ import {Module} from 'vuex'
 import type {ISystemState} from './types'
 import {IRootState} from "@/store/types";
 
-import {getPageListData} from '@/service/main/system/system'
+import {getPageListData,deletePageDate,createPageData,editPageData} from '@/service/main/system/system'
 
 const systemModule: Module<ISystemState, IRootState> = {
     namespaced: true,
@@ -61,14 +61,6 @@ const systemModule: Module<ISystemState, IRootState> = {
             // 1.获取pageUrl
             const pageName = payload.pageName
             const pageUrl = `/${pageName}/list`
-            // switch (pageName){
-            //     case 'users':
-            //         pageUrl = '/users/list'
-            //         break
-            //     case 'role':
-            //         pageUrl = '/role/list'
-            //         break
-            // }
 
             // 2.对页面发送请求
             const pageResult = await getPageListData(pageUrl, payload.queryInfo)
@@ -80,17 +72,55 @@ const systemModule: Module<ISystemState, IRootState> = {
 
             commit(`change${changePageName}List`,list)
             commit(`change${changePageName}Count`,totalCount)
-            // switch (pageName){
-            //     case 'users':
-            //         commit(`changeUserList`,list)
-            //         commit(`changeUserCount`,totalCount)
-            //         break
-            //     case 'role':
-            //         commit(`changeRoleList`,list)
-            //         commit(`changeRoleCount`,totalCount)
-            //         break
-            // }
+        },
+        async deletePageDataAction({dispatch},payload:any){
+            // 1.获取pageName 和 page Id
+            // pageName -> /users
+            // id -> /users/id
+            const {pageName,id} = payload
+            const pageUrl = `/${pageName}/${id}`
 
+            // 2.调用删除网路请求
+            await deletePageDate(pageUrl)
+
+            // 3.重新请求最新的数据
+            dispatch('getPageListAction',{
+                pageName,
+                queryInfo:{
+                    offset:0,
+                    size:10
+                }
+            })
+        },
+        async createPageDataAction({dispatch},payload:any){
+            // 1.创建数据的请求
+            const { pageName,newData } = payload
+            const pageUrl = `/${pageName}`
+            await createPageData(pageUrl,newData)
+
+            // 2.请求最新的数据
+            dispatch('getPageListAction',{
+                pageName,
+                queryInfo:{
+                    offset:0,
+                    size:10
+                }
+            })
+        },
+        async editPageDataAction({dispatch},payload:any){
+            // 编辑数据的请求
+            const { pageName,editData , id } = payload
+            const pageUrl = `/${pageName}/${id}`
+            await editPageData(pageUrl,editData)
+
+            // 2.请求最新的数据
+            dispatch('getPageListAction',{
+                pageName,
+                queryInfo:{
+                    offset:0,
+                    size:10
+                }
+            })
         }
     }
 }

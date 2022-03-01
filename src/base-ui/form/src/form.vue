@@ -7,7 +7,7 @@
       <el-row>
         <template v-for="item in formItems" :key="item.label">
           <el-col v-bind="colLayout">
-            <el-form-item :label="item.label" :rules="item.rules" :style="itemStyle">
+            <el-form-item  v-if="!item.isHidden" :label="item.label" :rules="item.rules" :style="itemStyle">
               <template v-if="item.type === 'input' || item.type === 'password'">
                 <el-input :placeholder="item.placeholder"
                           v-bind="item.otherOptions"
@@ -84,28 +84,11 @@ export default defineComponent({
   emits: ['update:modelValue'],
   setup(props, {emit}) {
 
-    // const formData = ref({...props.modelValue})
-    //
-    // watch(()=>props.modelValue,(newValue)=> {
-    //   formData.value = {...newValue}
-    // })
-    //
-    //
-    // watch(formData,
-    //     (newValue) => {
-    //       emit('update:modelValue', newValue)
-    //     },
-    //     {
-    //       deep: true
-    //     }
-    // )
-
     const handleValueChange = (value:any,field:string) => {
       emit('update:modelValue',{...props.modelValue,[field]:value})
     }
 
     return {
-      // formData
       handleValueChange
     };
   },
